@@ -11,7 +11,7 @@ st.markdown("Adjust the settings to match the conditions you plan to go bug hunt
 
 model = joblib.load("species_rf_model.pkl")
 label_encoder = joblib.load("label_encoder.pkl")
-weather_columns = joblib.load("weather_columns.pkl")
+weather_map = joblib.load("weather_map.pkl")
 #_________________________________________________________________________________________________
 
 st.sidebar.header("Conditions")
@@ -23,7 +23,7 @@ lon = st.sidebar.number_input("Longitude", value=-74.7002, format="%.4f")
 temp = st.sidebar.slider("Temperature (farenheit)", min_value=-20, max_value=120, value=67, step=1)
 humidity = st.sidebar.slider("Humidity (%)", min_value=0, max_value=100, value=67)
 
-weather_options = [col.replace("weather_", "") for col in weather_columns]
+weather_options = weather_map.keys()
 weather_condition = st.sidebar.selectbox("Weather", options=weather_options)
 #_________________________________________________________________________________________________
 
@@ -39,6 +39,7 @@ temp = (temp - 32)/1.8
 input_data = {
         "hourly_temp_C": temp,
         "hourly_humidity_percent": humidity,
+        "weather_code": weather_map[weather_condition],
         "hour_sin": hour_sin,
         "hour_cos": hour_cos,
         "day_sin": day_sin,
@@ -46,12 +47,6 @@ input_data = {
         "latitude": lat,
         "longitude": lon
     }
-
-for col in weather_columns:
-        if col == f"weather_{weather_condition}":
-            input_data[col] = 1
-        else:
-            input_data[col] = 0
 
 input_df = pd.DataFrame([input_data])
 
