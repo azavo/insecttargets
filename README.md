@@ -1,3 +1,3 @@
 # bugfinder-nj-only
 dashboard (since been slimed):
-![alt text](https://imgur.com/a/f93vKQ8)
+![alt text](https://i.imgur.com/gH7xfJA.png)
